@@ -1,0 +1,7 @@
+for i in *_1d_*V.nc; do ncks -d depthv,0,0,1 $i tmp/$i & echo $i; done
+
+for i in *_1d_*; do nccopy -d1 -k4 $i tmp/$i & echo $i; done
+for i in *_1m_*; do nccopy -d1 -k4 $i tmp/$i & echo $i; done
+
+
+for suf in 198 199 200 201 202 203; do echo $suf; for i in *_1?_$suf*; do nccopy -d1 -k4 $i tmp/$i &  done; sleep 15m; done

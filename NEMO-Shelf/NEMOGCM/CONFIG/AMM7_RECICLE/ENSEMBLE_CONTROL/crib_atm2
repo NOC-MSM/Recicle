@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for m in bcc-csm1-1-m MIROC-ESM CNRM-CM5 CanESM2
+do
+cd
+[ -d "/work/jdha/mount_points/archer_work/jdha" ] &&  echo "ARCHER WORK already mounted" || sshfs jdha@login.archer.ac.uk:/work/n01/n01 /work/jdha/mount_points/archer_work -o default_permissions,uid=18458,gid=18020,umask=022,transform_symlinks
+cd /work/jdha/mount_points/archer_work/jdha/2017/nemo/ssb2/NEMO-shelf/NEMOGCM/CONFIG/AMM7_RECICLE/ENSEMBLE_INPUTS/ATM/$m
+for var in huss pr prsn psl rlds tas rsds uas vas; do
+for y in {2070..2079}; do python ~/python-tools/python/cmip/atmos_infill.py -f $var\_$m\_rcp85_y$y.nc -m sftlf_fx_$m.nc -i flood -v $var; echo $m $var $y; done
+done
+done

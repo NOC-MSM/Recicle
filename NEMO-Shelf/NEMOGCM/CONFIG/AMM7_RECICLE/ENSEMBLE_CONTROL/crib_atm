@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for m in HadGEM2-ES HadGEM2-CC IPSL-CM5A-LR  IPSL-CM5B-LR IPSL-CM5A-LR  IPSL-CM5A-MR GFDL-ESM2M GFDL-ESM2G
+do
+cd
+uarcw
+marcw
+cd /work/jdha/mount_points/archer_work/jdha/2017/nemo/ssb2/NEMO-shelf/NEMOGCM/CONFIG/AMM7_RECICLE/ENSEMBLE_INPUTS/ATM/$m
+for var in huss pr prsn psl rlds tas rsds uas vas; do
+for y in {1960..2099}; do python ~/python-tools/python/cmip/atmos_infill.py -f $var\_$m\_rcp85_y$y.nc -m sftlf_fx_$m.nc -i flood -v $var; echo $m $var $y; done
+done
+done

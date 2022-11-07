@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<simulation> 
+
+ <context id="nemo" time_origin="1950-01-01 00:00:00" >
+    
+    <!-- $id$ -->
+    
+    <!-- 
+============================================================================================================
+=                                  definition of all existing variables                                    =
+=                                            DO NOT CHANGE                                                 =
+============================================================================================================
+    -->
+    <field_definition src="./field_def.xml"/>
+    <!-- 
+============================================================================================================
+=                                           output files definition                                        =
+=                                            Define your own files                                         =
+=                                         put the variables you want...                                    =
+============================================================================================================
+    -->
+    <file_definition type="one_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="10d" min_digits="4">
+    
+      <file_group id="1d" output_freq="1d"  output_level="10" enabled=".TRUE." > <!-- 1d files -->
+        <file id="file5" name_suffix="_grid_T" description="ocean T grid variables" >
+          <field field_ref="sst25h"    name="sst25h" long_name="surface_sea_water_potential_temperature"    />
+          <field field_ref="sss25h"     name="sss25h" long_name="surface_sea_water_salinity"                  />
+          <field field_ref="ssh25h"       name="ssh25h"   long_name="sea_surface_height_above_geoid"      />
+          <field field_ref="sbt"       name="sbt"   long_name="bottom_temperature"      />
+          <field field_ref="peat"       name="peat"   long_name="PE_anonmaly_temp_comp"      />
+          <field field_ref="pea"       name="pea"   long_name="PE_anomaly"      />
+          <field field_ref="mldr10_1"       name="mldr10_1"   long_name="Mixed Layer Depth (dsigma = 0.01 wrt 10m)"      />
+          <field field_ref="mlddzt"     name ="mlddzt" long_name="Thermocline Depth"      />
+
+        </file>
+
+        <file id="file6" name_suffix="_grid_U" description="ocean U grid variables" >
+          <field field_ref="vozocrtx25h"  name="uo25h"   long_name="sea_water_x_velocity" />
+        </file>
+
+       <file id="file7" name_suffix="_grid_V" description="ocean V grid variables" >
+          <field field_ref="vomecrty25h"  name="vo25h"   long_name="sea_water_y_velocity" />
+        </file>
+
+      </file_group>
+      <file_group id="1m" output_freq="1mo"  output_level="10" enabled=".TRUE." > <!-- 1d files -->
+        <file id="file1" name_suffix="_grid_T" description="ocean T grid variables" >
+          <field field_ref="e3t"  />
+          <field field_ref="toce"         name="thetao"   long_name="sea_water_potential_temperature" operation="instant"  freq_op="1mo" > @toce_e3t / @e3t </field>
+          <field field_ref="soce"         name="so"       long_name="sea_water_salinity" operation="instant"  freq_op="1mo" > @soce_e3t / @e3t </field>
+          <field field_ref="sst"          name="tos"      long_name="sea_surface_temperature"             />
+          <field field_ref="sss"          name="sos"      long_name="sea_surface_salinity"                />
+          <field field_ref="ssh"          name="zos"      long_name="sea_surface_height_above_geoid"      />
+          <field field_ref="sbt"       name="sbt"   long_name="bottom_temperature"      />
+          <field field_ref="peat"       name="peat"   long_name="PE_anonmaly_temp_comp"      />
+          <field field_ref="pea"       name="pea"   long_name="PE_anomaly"      />
+          <field field_ref="mldr10_1"       name="mldr10_1"   long_name="Mixed Layer Depth (dsigma = 0.01 wrt 10m)"      />
+          <field field_ref="mlddzt"     name ="mlddzt" long_name="Thermocline Depth"      />
+        </file>
+
+        <file id="file2" name_suffix="_grid_U" description="ocean U grid variables" >
+          <field field_ref="e3u"  />
+          <field field_ref="ssu"          name="uos"     long_name="sea_surface_x_velocity"    />
+          <field field_ref="uoce"         name="uo"      long_name="sea_water_x_velocity" operation="instant"  freq_op="1mo"> @uoce_e3u / @e3u </field>
+          <field field_ref="ubar"         name="ubar"    long_name="barotropic_x_velocity" />
+        </file>
+
+        <file id="file3" name_suffix="_grid_V" description="ocean V grid variables" >
+          <field field_ref="e3v"  />
+          <field field_ref="ssv"          name="vos"     long_name="sea_surface_y_velocity" />
+          <field field_ref="voce"         name="vo"      long_name="sea_water_y_velocity" operation="instant"  freq_op="1mo"> @voce_e3v / @e3v </field>
+          <field field_ref="vbar"         name="vbar"    long_name="barotropic_y_velocity" />
+        </file>
+
+        <file id="file4" name_suffix="_grid_W" description="ocean W grid variables" >
+          <field field_ref="e3w"  />
+          <field field_ref="woce"         name="wo"      long_name="ocean vertical velocity" />
+        </file>
+      </file_group>
+   </file_definition>
+    
+    <!-- 
+============================================================================================================
+= grid definition = = DO NOT CHANGE =
+============================================================================================================
+    -->
+    
+   <axis_definition>  
+      <axis id="deptht" long_name="Vertical T levels" unit="m" positive="down" />
+      <axis id="depthu" long_name="Vertical U levels" unit="m" positive="down" />
+      <axis id="depthv" long_name="Vertical V levels" unit="m" positive="down" />
+      <axis id="depthw" long_name="Vertical W levels" unit="m" positive="down" />
+      <axis id="nfloat" long_name="Float number"      unit="-"  />
+      <axis id="icbcla" long_name="Iceberg class"     unit="-"  />
+   </axis_definition> 
+    
+   <domain_definition src="./domain_def.xml"/>
+   
+   <grid_definition>    
+     <grid id="grid_T_2D" domain_ref="grid_T"/>
+     <grid id="grid_T_3D" domain_ref="grid_T" axis_ref="deptht"/>
+     <grid id="grid_U_2D" domain_ref="grid_U"/>
+     <grid id="grid_U_3D" domain_ref="grid_U" axis_ref="depthu"/>
+     <grid id="grid_V_2D" domain_ref="grid_V"/>
+     <grid id="grid_V_3D" domain_ref="grid_V" axis_ref="depthv"/>
+     <grid id="grid_W_2D" domain_ref="grid_W"/>
+     <grid id="grid_W_3D" domain_ref="grid_W" axis_ref="depthw"/>
+    </grid_definition>   
+  </context>
+  
+
+  <context id="xios">
+
+      <variable_definition>
+	
+     <!-- 
+        We must have buffer_size > jpi*jpj*jpk*8 (with jpi and jpj the subdomain size)
+-->
+	  <variable id="buffer_size"               type="integer">10000000</variable>
+	  <variable id="buffer_server_factor_size" type="integer">2</variable>
+	  <variable id="info_level"                type="integer">0</variable>
+	  <variable id="using_server"              type="boolean">true</variable>
+	  <variable id="using_oasis"               type="boolean">false</variable>
+	  <variable id="oasis_codes_id"            type="string" >oceanx</variable>
+	
+      </variable_definition>
+               
+  </context>
+  
+</simulation>
