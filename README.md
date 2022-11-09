@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/153254595.svg)](https://zenodo.org/badge/latestdoi/153254595)
+
 # RECICLE
 
 ## Configuration
